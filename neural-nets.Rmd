@@ -1,6 +1,6 @@
 ---
 title: "Neural Networks"
-author: "Charles Lang"
+author: "Juan Djuwadi"
 date: "1/28/2018"
 output: html_document
 ---
@@ -24,9 +24,9 @@ library(neuralnet)
 
 Now upload your data
 ```{r}
-D1 <-
+D1 <- read.csv("attention1.csv")
   
-D2 <-
+D2 <- read.csv("attention2.csv")
 ```
 
 Now you can build a neural net that predicts attention based on webcam images. The command "neuralnet" sets up the model. It is composed of four basic arguments:
@@ -45,25 +45,42 @@ plot(net)
 You have now trained a neural network! The plot shows you the layers of your newtork as black nodes and edges with the calculated weights on each edge. The blue nodes and edges are called bias terms. The bias term anchors the activation function, the weights change the shape of the activation function while the bias term changes the overall position of the activation function - if you have used linear regressionthe bias term is like the intercept of the regression equation, it shifts the trend line up and down the y axis, while the other parameters change the angle of the line. The plot also reports the final error rate and the number of iterations ("steps") that it took to reach these weights.
 
 What happens if you increase the number of hidden layers in the neural net? Build a second neural net with more layers in it and determine if this iproves your predictions or not? How can you tell if your new neural network is doing a better job than your first?
+```{r}
+net2 <- neuralnet(attention ~ eyes + face.forward + chin.up, D1, hidden = 5, threshold=0.01)
+plot(net2)
+```
 
 Now use your preferred neural net to predict the second data set. You will need to create a new data frame (D3) that only includes the input layers to use this command.
 
 ```{r}
-D3 <-
+D3 <- D2[,-4]
 ```
 
 Now you can create predictions using your neural net
 ```{r}
-net.prediction <- neuralnet::compute(net, D3)
+
 
 #You can access the predictions from your model as "net.prediction$net.result". Predictions will be numeric estimates from 1 or 0, convert these into exact predictions of 1 and 0 and then determine the accuracy of your neural net on this new data.
 
+net.prediction <- neuralnet::compute(net, D3)
+pred1<-ifelse(net.prediction$net.result < 0.5, 0, 1)
+table(pred1, D2$attention)
+
+# Second neural network with 5 hidden layers
+net.prediction2 <- neuralnet::compute(net2, D3)
+pred2<-ifelse(net.prediction2$net.result < 0.5, 0, 1)
+table(pred2, D2$attention)
+
+#Both prediction accuracy remains the same regardless of the amount of layers. 
 ```
 
 ## Please answer the following questions:
 
 1. How accurate is your neural net? How can you tell?
+# 94% Accuracy 
 
 2. How would you explain your model to the students whose behavior you are predicting? 
+# Basically tell them that my model guesses whether the students are paying attention using facial motor suggestions: primarily 
 
 3. This is a very simple example of a neural network. Real facial recognition is very complex though. Would a neural network be a good solution for predicting real facial movements? Why, why not? 
+# Yes, there's a lot of data that can be generated with the micromovements of the face and neural networks serve as an effective way to parse through that data. As the amount of data increases, the accuracy for predicting those facial movement will increase as well. Though, I've read that deep learning is better. 
