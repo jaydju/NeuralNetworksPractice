@@ -47,14 +47,3 @@ table(pred2, D2$attention)
 
 #Both prediction accuracy remains the same regardless of the amount of layers. 
 ```
-
-## Please answer the following questions:
-
-1. How accurate is your neural net? How can you tell?
-# 94% Accuracy 
-
-2. How would you explain your model to the students whose behavior you are predicting? 
-# Basically tell them that my model guesses whether the students are paying attention using facial motor suggestions: primarily 
-
-3. This is a very simple example of a neural network. Real facial recognition is very complex though. Would a neural network be a good solution for predicting real facial movements? Why, why not? 
-# Yes, there's a lot of data that can be generated with the micromovements of the face and neural networks serve as an effective way to parse through that data. As the amount of data increases, the accuracy for predicting those facial movement will increase as well. Though, I've read that deep learning is better. 
